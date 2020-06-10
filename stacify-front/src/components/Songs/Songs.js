@@ -5,15 +5,26 @@ import { ColorExtractor } from 'react-color-extractor';
 class Songs extends PureComponent {
     constructor() {
         super();
-        this.state = { test: '', colors: [] };
+        this.state = { tracks: [], colors: [] };
     }
 
     componentDidMount() {
         console.log('Component Did Mount')
-        
-        let test = this.props.songs.tracks[0].album.images[0].url;
-        console.log(test, this.props.songs.tracks)
-        this.setState({ test });     
+        const tracks = !this.props.songs.tracks ? [] : this.props.songs.tracks;
+        this.setState({ tracks });   
+    }
+
+    gettingImages = () => {
+        const { tracks } = this.state;
+        return tracks.map((image, id) => {
+            return (
+                <li key={id} >
+                    <ColorExtractor getColors={this.getColors}>
+                        <img src={image.album.images[0].url} alt={image.album.name} width='50' height='50' />
+                    </ColorExtractor>
+                </li>
+            )
+        })
     }
 
     getColors = colors => {
@@ -42,11 +53,11 @@ class Songs extends PureComponent {
        
         return (
             <div>
-                hey
-                <ColorExtractor getColors={this.getColors}>
-                    <img src={this.state.test} alt='test' />
-                </ColorExtractor>
-                {this.renderSwatches()}
+                <nav>
+                    <ul>
+                        {this.gettingImages()}
+                    </ul>
+                </nav>
             </div>
         );
     }
