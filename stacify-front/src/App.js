@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Root from 'components/Root';
 import axios from 'axios';
 
-class App extends Component {
+class App extends PureComponent {
   constructor(props) {
     super(props);
     this.state = { data: '' }

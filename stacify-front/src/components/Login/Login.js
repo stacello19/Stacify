@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Login extends Component {
-
-
-    render() {
-        return (
-            <div>
-                Spotify:
-                <button><a href='http://localhost:9000/test/login'>Login</a></button>
-            </div>
-        );
-    }
+const Login = () => {
+    return(
+        <div>
+            Spotify:
+            <button><a href='http://localhost:9000/test/login'>Login</a></button>
+        </div>
+    )
 }
+
 
 export default Login;

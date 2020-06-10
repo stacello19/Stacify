@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import axios from 'axios';
 import querystring from 'querystring';
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router';
+import * as actions from 'reducers';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-class Home extends Component {
+class Home extends PureComponent {
     static propTypes = {
         seed_genres: PropTypes.string,
         access_token: PropTypes.string, 
@@ -38,7 +41,6 @@ class Home extends Component {
                      target_loudness: 0,
                      target_mode: 0,
                      target_tempo: 0,
-                     redirect: false,
                      loginDirect: false};
         this.d3Chart = React.createRef();
     }
@@ -225,6 +227,7 @@ class Home extends Component {
     getRecommendation = async (token) => {
         const { seed_genres, target_acousticness, target_danceability, target_energy, target_instrumentalness,
                 target_liveness, target_loudness, target_mode, target_tempo } = this.state;
+        const { getSongData } = this.props;
         const query = querystring.stringify({
             market: 'US',
             seed_genres,
@@ -245,11 +248,11 @@ class Home extends Component {
                    'Authorization': 'Bearer ' + token
                 }
             });
-            this.setState({ redirect: true })
-            console.log(response)
+            getSongData(response.data);
+            this.props.history.push('/songs');   
         } catch(e) {
             alert('Your Login Session expired. Redirecting to Login Page')
-            this.setState({ loginDirect: true })
+            this.props.history.push('/');
         }
     }
 
@@ -265,15 +268,7 @@ class Home extends Component {
     }
 
     render() {
-        const { display_name, id, spotifyProfile, redirect, loginDirect } = this.state;
-
-        if(redirect) {
-            return <Redirect to='/songs' />
-        }
-
-        if(loginDirect) {
-            return <Redirect to='/' />
-        }
+        const { display_name, id, spotifyProfile } = this.state;
 
         return (
             <div>
@@ -302,4 +297,10 @@ class Home extends Component {
     }
 }
 
-export default Home;
+
+export default connect(
+    null, 
+    (dispatch) => ({
+        getSongData: bindActionCreators(actions.getSongData, dispatch)
+    })
+)(withRouter(Home));

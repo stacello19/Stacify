@@ -1,14 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Songs from 'components/Songs';
 
-class SongPage extends Component {
-    render() {
-        return (
-            <div>
-                <Songs />
-            </div>
-        );
-    }
+const SongPage = () => {
+    return (
+        <div>
+            <Songs/>
+        </div>
+    )
 }
-
 export default SongPage;
