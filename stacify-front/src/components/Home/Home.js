@@ -249,7 +249,11 @@ class Home extends PureComponent {
                 }
             });
             getSongData(response.data);
-            this.props.history.push('/songs');   
+
+            this.props.history.push({
+                pathname: '/songs',
+                search: query
+            });   
         } catch(e) {
             alert('Your Login Session expired. Redirecting to Login Page')
             this.props.history.push('/');
@@ -271,7 +275,7 @@ class Home extends PureComponent {
         const { display_name, id, spotifyProfile } = this.state;
 
         return (
-            <div>
+            <div className='homeDiv'>
                 <p>Name: {display_name}</p>
                 <p>id: {id}</p>
                 <p>url: {spotifyProfile}</p>

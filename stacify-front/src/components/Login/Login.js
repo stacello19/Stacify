@@ -2,7 +2,7 @@ import React from 'react';
 
 const Login = () => {
     return(
-        <div>
+        <div className='loginDiv'>
             Spotify:
             <button><a href='http://localhost:9000/test/login'>Login</a></button>
         </div>
