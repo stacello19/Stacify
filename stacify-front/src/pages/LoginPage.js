@@ -1,12 +1,11 @@
 import React from 'react';
-import Login from 'components/Login';
+import { Login, Navbar } from 'components';
 
-const LoginPage = () => {
-    return (
-        <div>
-            <Login />
-        </div>
-    )
-};
+const LoginPage = () => (
+    <React.Fragment>
+        <Navbar />
+        <Login />
+    </React.Fragment>
+)
 
 export default LoginPage;

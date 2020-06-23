@@ -1,0 +1,25 @@
+.list {
+    min-height: 100vh;
+}
+
+.colorlist {
+    display: flex;
+    justify-content: center;
+}
+
+li.active {
+    padding: 1em;
+    background-color: white;
+}
+
+.musicData {
+    text-align: center;
+}
+
+.musicData h3 {
+    color: white;
+}
+
+.colorDiv {
+    margin-top: 1em;
+}

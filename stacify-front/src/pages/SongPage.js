@@ -1,11 +1,10 @@
 import React from 'react';
-import Songs from 'components/Songs';
+import { Songs } from 'components';
 
-const SongPage = () => {
-    return (
-        <div>
-            <Songs/>
-        </div>
-    )
-}
+const SongPage = () => (
+    <React.Fragment>
+        <Songs />
+    </React.Fragment>
+)
+
 export default SongPage;

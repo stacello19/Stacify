@@ -1,12 +1,12 @@
 import React from 'react';
-import Home from 'components/Home';
+import { Home, Navbar } from 'components';
 
-const HomePage = () => {
-    return(
-        <div>
-            <Home/>
-        </div>
-    )
-}
+
+const HomePage = () => (
+    <React.Fragment>
+        <Navbar />
+        <Home />
+    </React.Fragment>
+);
 
 export default HomePage;

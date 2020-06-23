@@ -1,86 +1,38 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { ColorExtractor } from 'react-color-extractor';
 import styles from './Songs.scss';
 import classNames from 'classnames/bind';
 import querystring from 'querystring';
+import Players from './Player/Player';
+import Nav from './ImageColor/ImageColor';
+import { bindActionCreators } from 'redux';
+import * as actions from 'reducers';
+import axios from 'axios';
+import Navbar from 'components/Navbar';
+import NoSong from './NoSong/NoSong';
 
 const cx = classNames.bind(styles);
 
 class Songs extends PureComponent {
-    constructor() {
-        super();
-        this.state = { tracks: [], colors: [] };
-    }
 
-    componentDidMount() {
+    async componentDidMount() {
         window.addEventListener('scroll', this.handleScroll, { passive: true } )
+        const { tracks } = this.props.songs;
+        const { access_token, getSongData } = this.props;
 
-        const tracks = !this.props.songs.tracks ? [] : this.props.songs.tracks;
+        
         if(!tracks) {
-            const query = querystring.parse(window.location.search.substring(1));
-            console.log(query)
-            // const response = await axios({
-            //     url: `https://api.spotify.com/v1/recommendations?${query}`,
-            //     headers: {
-            //        'Authorization': 'Bearer ' + token
-            //     }
-            // });
+            let query = querystring.parse(window.location.search.substring(1));
+                query = querystring.stringify(query);
+        
+            const response = await axios({
+                url: `https://api.spotify.com/v1/recommendations?${query}`,
+                headers: {
+                   'Authorization': 'Bearer ' + access_token
+                }
+            });
+            getSongData(response.data);
         }
-        this.setState({ tracks });   
-    }
-
-    gettingImages = () => {
-        const { tracks } = this.state;
-  
-        return tracks.map((image, id) => {
-            return (
-                <li key={id} data-ref={`id${id}`}>
-                    <ColorExtractor getColors={this.getColors}>
-                        <img src={image.album.images[0].url} alt={image.album.name} width='50' height='50' />
-                    </ColorExtractor>
-                </li>
-            )
-        })
-    }
-
-    getColors = colors => {
-        this.setState(state => ({ colors: [...state.colors, colors] }))
-    }
-
-    renderSwatches = (colors) => {
-        return colors.map((color, id) => {
-          return (
-            <div
-              key={id}
-              className={cx('colorDiv')}
-              style={{
-                backgroundColor: color,
-                width: '15rem',
-                height: '6rem'
-              }}
-            />
-          )
-        })
-      }
-
-    players = () => {
-        const { tracks, colors } = this.state;
-  
-        return tracks.map((song, i) =>  {
-
-            return (
-                <div className={cx(`list`)} id={cx(`id${i}`)} key={i}>
-                    <div className={cx(`colorlist`)}>
-                        { colors[i] && this.renderSwatches(colors[i]) }
-                    </div>
-                    <div className={cx('musicData')}>
-                        <h3>{song.name}</h3>
-                        <iframe src={`https://open.spotify.com/embed?uri=${song.uri}`} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                    </div>
-                </div>
-            )
-        })
     }
 
     handleScroll = () => {
@@ -119,25 +71,33 @@ class Songs extends PureComponent {
     }
 
     render() {
-        const { tracks } = this.state;
+
+        const { getColors, colors, songs } = this.props;
         return (
-            <div className={cx('content-container')}>
-                <nav>
+            <React.Fragment>
+                <div className={cx('songTop')}>
+                    <Navbar />
                     <ul className={cx('songListNav')}>
-                        { tracks && this.gettingImages() }
+                       { songs.tracks && <Nav tracks={songs.tracks} gotColors={getColors}/> }
                     </ul>
-                </nav>
-                <div className={cx('songListDiv')}>
-                    { tracks && this.players() }
                 </div>
-            </div>
+                <div className={cx('songListDiv')}>
+                    { songs.tracks ? <Players tracks={songs.tracks} colors={colors}/> : <NoSong /> }
+                </div>
+            </React.Fragment>
         );
     }
 }
 
 export default connect(
     (state) => ({
-        songs: state.songs
+        songs: state.songs,
+        colors: state.colors,
+        access_token: state.access_token,
+        refresh_token: state.refresh_token
     }),
-    null
+    (dispatch) => ({
+        getColors: bindActionCreators(actions.getColors, dispatch),
+        getSongData: bindActionCreators(actions.getSongData, dispatch)
+    })
 )(Songs)

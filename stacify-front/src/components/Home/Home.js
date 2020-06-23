@@ -9,28 +9,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class Home extends PureComponent {
-    static propTypes = {
-        seed_genres: PropTypes.string,
-        access_token: PropTypes.string, 
-        refresh_token: PropTypes.string, 
-        display_name: PropTypes.string, 
-        id: PropTypes.string, 
-        target_acousticness: PropTypes.number,
-        target_danceability: PropTypes.number,
-        target_energy: PropTypes.number,
-        target_instrumentalness: PropTypes.number,
-        target_liveness: PropTypes.number,
-        target_loudness: PropTypes.number,
-        target_mode: PropTypes.number,
-        target_tempo: PropTypes.number
-    }
 
     constructor() {
         super();
-        this.state={ access_token: '', 
-                     refresh_token: '',
-                     display_name: '', 
-                     id: '', 
+        this.state={ display_name: '', 
                      spotifyProfile: '',
                      seed_genres: 'acoustic',
                      target_acousticness: 0,
@@ -41,16 +23,18 @@ class Home extends PureComponent {
                      target_loudness: 0,
                      target_mode: 0,
                      target_tempo: 0,
-                     loginDirect: false};
+                     loginDirect: false };
         this.d3Chart = React.createRef();
     }
 
     async componentDidMount() {
+        const { getToken } = this.props;
         const params = this.getHashParams();
         let access_token = params.access_token;
         let refresh_token = params.refresh_token;
+
         this.getUserData(access_token);
-        this.setState({ access_token, refresh_token });
+        getToken(access_token, refresh_token);
         this.createChart();
     }
     
@@ -203,7 +187,7 @@ class Home extends PureComponent {
     }
 
     getUserData = async (token) => {
-
+        const { getToken, refresh_token, getInfo } = this.props;
         try {
             const response = await axios({
                 url: 'https://api.spotify.com/v1/me',
@@ -212,14 +196,16 @@ class Home extends PureComponent {
                 }
             }); 
 
-            const { display_name, id, external_urls } = response.data;
-            this.setState({ display_name, id, spotifyProfile: external_urls.spotify })
+            const { display_name, external_urls } = response.data;
+            const spotifyProfile = external_urls.spotify;
+
+            getInfo(display_name, spotifyProfile)
+            this.setState({ display_name, spotifyProfile })
         } catch(e) {
-            const { refresh_token } = this.state;
             const response = await axios.get(`http://localhost:9000/test/refresh_token?refresh_token=${refresh_token}`)
             const access_token = response.data.access_token;
             
-            this.setState({ access_token })
+            getToken(access_token, refresh_token);
             this.getUserData(access_token)
         }
     }
@@ -227,7 +213,7 @@ class Home extends PureComponent {
     getRecommendation = async (token) => {
         const { seed_genres, target_acousticness, target_danceability, target_energy, target_instrumentalness,
                 target_liveness, target_loudness, target_mode, target_tempo } = this.state;
-        const { getSongData } = this.props;
+        const { getSongData, getQuery } = this.props;
         const query = querystring.stringify({
             market: 'US',
             seed_genres,
@@ -240,7 +226,8 @@ class Home extends PureComponent {
             target_mode,
             target_tempo 
             });
-        
+
+    
         try {
             const response = await axios({
                 url: `https://api.spotify.com/v1/recommendations?${query}`,
@@ -249,7 +236,7 @@ class Home extends PureComponent {
                 }
             });
             getSongData(response.data);
-
+            getQuery(query);
             this.props.history.push({
                 pathname: '/songs',
                 search: query
@@ -266,18 +253,17 @@ class Home extends PureComponent {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const { access_token } = this.state;
+        const { access_token } = this.props;
 
         this.getRecommendation(access_token)
     }
 
     render() {
-        const { display_name, id, spotifyProfile } = this.state;
+        const { display_name, spotifyProfile } = this.state;
 
         return (
-            <div className='homeDiv'>
+            <div className='homeDiv' style={{backgroundColor: 'white'}}>
                 <p>Name: {display_name}</p>
-                <p>id: {id}</p>
                 <p>url: {spotifyProfile}</p>
                 <div ref={this.d3Chart}></div>
                 <form onSubmit={this.handleSubmit}>
@@ -301,10 +287,28 @@ class Home extends PureComponent {
     }
 }
 
+Home.propTypes = {
+    seed_genres: PropTypes.string,
+    display_name: PropTypes.string, 
+    target_acousticness: PropTypes.number,
+    target_danceability: PropTypes.number,
+    target_energy: PropTypes.number,
+    target_instrumentalness: PropTypes.number,
+    target_liveness: PropTypes.number,
+    target_loudness: PropTypes.number,
+    target_mode: PropTypes.number,
+    target_tempo: PropTypes.number
+}
 
 export default connect(
-    null, 
+    (state) => ({
+        access_token: state.access_token,
+        refresh_token: state.refresh_token
+    }), 
     (dispatch) => ({
-        getSongData: bindActionCreators(actions.getSongData, dispatch)
+        getSongData: bindActionCreators(actions.getSongData, dispatch),
+        getToken: bindActionCreators(actions.getToken, dispatch),
+        getQuery: bindActionCreators(actions.getQuery, dispatch),
+        getInfo: bindActionCreators(actions.getInfo, dispatch)
     })
 )(withRouter(Home));

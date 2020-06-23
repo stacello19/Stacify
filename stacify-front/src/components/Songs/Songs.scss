@@ -1,8 +1,4 @@
-.content-container {
-    background-color: black;
-}
-
-nav {
+.songTop {
     position: fixed;
     top: 0;
     right: 0;
@@ -16,31 +12,10 @@ nav {
     padding: 0;
     background-color: black;
     justify-content: space-evenly;
+    list-style: none;
 }
 
-.list {
+.songListDiv {
+    padding-top: 11em;
     position: relative;
-    min-height: 100vh;
-}
-
-.colorlist {
-    display: flex;
-    justify-content: center;
-}
-
-li.active {
-    padding: 1em;
-    background-color: white;
-}
-
-.colorDiv {
-    margin-top: 5rem;
-}
-
-.musicData {
-    text-align: center;
-}
-
-.musicData h3 {
-    color: white;
 }

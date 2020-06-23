@@ -1,10 +1,12 @@
 import React from 'react';
+import { Navbar } from 'components';
 
 const NotFoundPage = () => {
     return (
-        <div>
+        <React.Fragment>
+            <Navbar />
             <h2>Not Found!</h2>
-        </div>
+        </React.Fragment>
     )
 };
 
