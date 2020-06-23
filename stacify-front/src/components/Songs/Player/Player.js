@@ -19,7 +19,7 @@ const Players = (props) => {
                     <h3>{song.name}</h3>
                     {/* loading="lazy" */}
                     {/* src={`https://open.spotify.com/embed?uri=${song.uri}`} */}
-                    <iframe className="audio-player" src='about:blank' width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    <iframe id={i} title='iframe-player' className="audio-player" width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     {/* <iframe src={`https://open.spotify.com/embed?uri=${song.uri}`} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe> */}
                 </div>
             </div>

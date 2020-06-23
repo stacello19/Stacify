@@ -42,10 +42,7 @@ class Songs extends PureComponent {
 
         const config = {
             threshold: 0.5
-          };
-          const config1 = {
-            threshold: 0.5
-          };          
+          };        
 
         let observer = new IntersectionObserver(function(entries, self) {
             entries.forEach(entry => {
@@ -58,12 +55,15 @@ class Songs extends PureComponent {
 
         let observer1 = new IntersectionObserver(function(players, self) {
             players.forEach((player, index) => {
+                // console.log(player)
                 if(player.isIntersecting) {
                     intersectionPlayer(player, index);
-                    self.unobserve(player.target);
+                    // self.unobserve(player.target);
                 }
             })            
-        }, config1)
+        }, {
+            threshold: 0.5
+          })
 
         sections.forEach(section => {
             observer.observe(section)
@@ -87,8 +87,15 @@ class Songs extends PureComponent {
         }
 
         function intersectionPlayer(player, index) {
-            console.log(tracks[index].url)
-            player.target.src = `https://open.spotify.com/embed?uri=${tracks[index].uri}`;
+            // console.log(tracks[index].url)
+
+            const identity = player.target.id;
+
+            if(player.target.classList[0] === 'audio-player'){
+                player.target.src = `https://open.spotify.com/embed?uri=${tracks[identity].uri}`;
+                player.target.classList.remove('audio-player');            
+                observer1.unobserve(player.target);
+            }
         }
     }
 
