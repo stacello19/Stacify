@@ -36,23 +36,40 @@ class Songs extends PureComponent {
     }
 
     handleScroll = () => {
+        const { tracks } = this.props.songs;
         const sections = document.querySelectorAll('.list')
+        const players = document.querySelectorAll('.audio-player')
 
-        
         const config = {
             threshold: 0.5
           };
+          const config1 = {
+            threshold: 0.5
+          };          
 
         let observer = new IntersectionObserver(function(entries, self) {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     intersectionHandler(entry);
+                    self.unobserve(entry.target);
                 }
-            })
+            });         
         }, config)
+
+        let observer1 = new IntersectionObserver(function(players, self) {
+            players.forEach((player, index) => {
+                if(player.isIntersecting) {
+                    intersectionPlayer(player, index);
+                    self.unobserve(player.target);
+                }
+            })            
+        }, config1)
 
         sections.forEach(section => {
             observer.observe(section)
+        })
+        players.forEach(player => {
+            observer1.observe(player)
         })
 
         function intersectionHandler(entry) {
@@ -68,21 +85,30 @@ class Songs extends PureComponent {
                 shouldBeActive.classList.add('active');
             }
         }
+
+        function intersectionPlayer(player, index) {
+            console.log(tracks[index].url)
+            player.target.src = `https://open.spotify.com/embed?uri=${tracks[index].uri}`;
+        }
     }
 
     render() {
 
-        const { getColors, colors, songs } = this.props;
+        const { getColors, colors, songs: { tracks } } = this.props;
+        // TODO: somehow decoupling the tracks.map;
+        const newTrack = tracks ? tracks.slice(1,3) : [];
         return (
             <React.Fragment>
                 <div className={cx('songTop')}>
                     <Navbar />
                     <ul className={cx('songListNav')}>
-                       { songs.tracks && <Nav tracks={songs.tracks} gotColors={getColors}/> }
+                       { tracks && <Nav tracks={tracks} gotColors={getColors}/> }
                     </ul>
                 </div>
+
+                {/* scroll ... , */}
                 <div className={cx('songListDiv')}>
-                    { songs.tracks ? <Players tracks={songs.tracks} colors={colors}/> : <NoSong /> }
+                    { tracks ? <Players tracks={tracks} colors={colors}/> : <NoSong /> }
                 </div>
             </React.Fragment>
         );
