@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import styles from './Home.scss';
+import classNames from 'classnames/bind';
 import axios from 'axios';
 import querystring from 'querystring';
 import * as d3 from 'd3';
@@ -8,13 +10,13 @@ import * as actions from 'reducers';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+const cx = classNames.bind(styles);
+
 class Home extends PureComponent {
 
     constructor() {
         super();
-        this.state={ display_name: '', 
-                     spotifyProfile: '',
-                     seed_genres: 'acoustic',
+        this.state={ seed_genres: 'acoustic',
                      target_acousticness: 0,
                      target_danceability: 0,
                      target_energy: 0,
@@ -22,8 +24,7 @@ class Home extends PureComponent {
                      target_liveness: 0,
                      target_loudness: 0,
                      target_mode: 0,
-                     target_tempo: 0,
-                     loginDirect: false };
+                     target_tempo: 0 };
         this.d3Chart = React.createRef();
     }
 
@@ -40,9 +41,11 @@ class Home extends PureComponent {
     
    
     createChart = () => {
+        const div = document.querySelector('.d3Div');
+
         let that = this;
-        const height = 400;
-        const width = 400;
+        const height = div.offsetHeight;
+        const width = div.offsetWidth;
         const names = ['target_acousticness', 'target_danceability', 'target_energy', 'target_instrumentalness', 'target_liveness', 'target_loudness', 'target_mode', 'target_tempo']
         const nodes = d3.range(8).map(function(i) { return {name: names[i], radius: 25, x: Math.random() * 85 + 100, y: Math.random() * 95 +200}; })
         const color = d3.scaleOrdinal(d3.schemePastel2);
@@ -51,7 +54,6 @@ class Home extends PureComponent {
                         .append('svg')
                             .attr('width', width)
                             .attr('height', height)
-                            .style('border', '1px solid black')
 
         //Force for the circles
         d3.forceSimulation(nodes)
@@ -200,7 +202,7 @@ class Home extends PureComponent {
             const spotifyProfile = external_urls.spotify;
 
             getInfo(display_name, spotifyProfile)
-            this.setState({ display_name, spotifyProfile })
+            // this.setState({ display_name, spotifyProfile })
         } catch(e) {
             const response = await axios.get(`http://localhost:9000/test/refresh_token?refresh_token=${refresh_token}`)
             const access_token = response.data.access_token;
@@ -259,28 +261,30 @@ class Home extends PureComponent {
     }
 
     render() {
-        const { display_name, spotifyProfile } = this.state;
-
         return (
-            <div className='homeDiv' style={{backgroundColor: 'white'}}>
-                <p>Name: {display_name}</p>
-                <p>url: {spotifyProfile}</p>
-                <div ref={this.d3Chart}></div>
-                <form onSubmit={this.handleSubmit}>
-                    genres: <select name='seed_genres' onChange={this.listenChange}> 
-                                <option value="acoustic">acoustic</option>
-                                <option value="blues">blues</option>
-                                <option value="classical">classical</option>
-                                <option value="club">club</option>
-                                <option value="country">country</option>
-                                <option value="disney">disney</option>
-                                <option value="electro">electro</option>
-                                <option value="groove">groove</option>
-                                <option value="jazz">jazz</option>
-                                <option value="pop">pop</option>
-                                <option value="tango">tango</option>
-                            </select>
-                    <button type='submit'>Submit</button>
+            <div className={cx('homeDiv')}>
+                <div className={cx('d3Div')} ref={this.d3Chart}></div>
+                <form className={cx('formDiv')} onSubmit={this.handleSubmit}>
+                    <h3>Pick Your Genres:</h3>
+                    <select name='seed_genres' onChange={this.listenChange}> 
+                        <option selected disabled>Choose an option</option>
+                        <option value="acoustic">acoustic</option>
+                        <option value="blues">blues</option>
+                        <option value="classical">classical</option>
+                        <option value="club">club</option>
+                        <option value="country">country</option>
+                        <option value="disney">disney</option>
+                        <option value="electro">electro</option>
+                        <option value="groove">groove</option>
+                        <option value="jazz">jazz</option>
+                        <option value="pop">pop</option>
+                        <option value="tango">tango</option>
+                    </select>
+                    <br/>
+                    <button className={cx('btn')} type='submit'>Submit</button>
+                    <h4>Instructions:</h4>
+                    <h5>Drag the circle to make it Bigger</h5>
+                    <h5>Click the circle to make it Smaller</h5>
                 </form>
             </div>
         );

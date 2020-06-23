@@ -22,8 +22,8 @@ const Navbar = (props) => {
         links = (
             <React.Fragment>
                 <div className={cx('leftNav')}>
-                    <h4>Hello, ${name}</h4>
-                    <a href={`${spotifyProfile}`}>My Spotify</a>
+                    <h3>Hello, ${name}</h3>
+                    <a className={cx('linkSpotify')} href={`${spotifyProfile}`}>My Spotify</a>
                 </div>
                 <div className={cx('rightNav')}>
                     <Link className={cx('links')} to='/' onClick={logOut}>Logout</Link>
