@@ -37,22 +37,24 @@ class Songs extends PureComponent {
 
     handleScroll = () => {
         const sections = document.querySelectorAll('.list')
-
         
         const config = {
             threshold: 0.5
           };
 
         let observer = new IntersectionObserver(function(entries, self) {
+            
             entries.forEach(entry => {
+                
                 if(entry.isIntersecting) {
                     intersectionHandler(entry);
+                    lazyLoading(entry);
                 }
             })
         }, config)
 
         sections.forEach(section => {
-            observer.observe(section)
+            observer.observe(section);
         })
 
         function intersectionHandler(entry) {
@@ -66,6 +68,22 @@ class Songs extends PureComponent {
             }
             if(shouldBeActive) {
                 shouldBeActive.classList.add('active');
+            }
+        }
+
+        let that = this;
+        function lazyLoading(entry) {
+            const { songs } = that.props;
+            const player = entry.target.childNodes[1].lastChild;
+            const id = entry.target.id.slice(2);
+
+            if(player.classList[0] === 'lazy') {
+                player.src = `https://open.spotify.com/embed?uri=${songs.tracks[id].uri}`;
+                if(id === '0') {
+                    player.setAttribute('allow', "encrypted-media; autoplay;");
+                }
+                player.classList.remove('lazy');
+                observer.unobserve(player);
             }
         }
     }

@@ -16,7 +16,7 @@ const Players = (props) => {
                 </div>
                 <div className={cx('musicData')}>
                     <h3>{song.name}</h3>
-                    <iframe src={`https://open.spotify.com/embed?uri=${song.uri}`} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    <iframe className={cx('lazy')} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                 </div>
             </div>
         )

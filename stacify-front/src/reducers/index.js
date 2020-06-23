@@ -17,10 +17,16 @@ export const getColors = createAction(GET_COLORS, colors => colors);
 export const logOut = createAction(LOGOUT, () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('display_name');
+    localStorage.removeItem('spotifyProfile');
     return null;
 })
 export const getQuery = createAction(GETQUERY, query => query)
-export const getInfo = createAction(GET_INFO, (display_name, spotifyProfile) => ({display_name, spotifyProfile}));
+export const getInfo = createAction(GET_INFO, (display_name, spotifyProfile) => {
+    localStorage.setItem('display_name', display_name);
+    localStorage.setItem('spotifyProfile', spotifyProfile);
+    return {display_name, spotifyProfile};
+});
 
 const initialState = {
     colors: [],
@@ -28,8 +34,8 @@ const initialState = {
     access_token: localStorage.getItem('access_token') ? localStorage.getItem('access_token') : null,
     refresh_token: localStorage.getItem('refresh_token') ? localStorage.getItem('refresh_token') : null,
     query: '',
-    display_name: null,
-    spotifyProfile: null
+    display_name: localStorage.getItem('display_name') ? localStorage.getItem('display_name') : null,
+    spotifyProfile: localStorage.getItem('spotifyProfile') ? localStorage.getItem('spotifyProfile') : null,
 };;
 
 const reducers = handleActions({

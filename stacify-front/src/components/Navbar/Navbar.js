@@ -14,7 +14,7 @@ const Navbar = (props) => {
 
     let links = (
         <React.Fragment>
-            <Link className={cx('links')} to='/'>Login</Link>
+            <h2 style={{marginLeft: '2em'}}>WELCOME TO <span>STACIFY</span></h2>
         </React.Fragment>
     )
     if(isLogged) {
@@ -23,7 +23,7 @@ const Navbar = (props) => {
             <React.Fragment>
                 <div className={cx('leftNav')}>
                     <h3>Hello, ${name}</h3>
-                    <a className={cx('linkSpotify')} href={`${spotifyProfile}`}>My Spotify</a>
+                    <a className={cx('linkSpotify')} href={`${spotifyProfile}`}>Go To My Spotify</a>
                 </div>
                 <div className={cx('rightNav')}>
                     <Link className={cx('links')} to='/' onClick={logOut}>Logout</Link>
