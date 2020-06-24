@@ -36,18 +36,27 @@ class Songs extends PureComponent {
     }
 
     handleScroll = () => {
-        const sections = document.querySelectorAll('.list')
-        
+        const sections = document.querySelectorAll('.list');
+        const lazys = document.querySelectorAll('.lazy');
+
         const config = {
             threshold: 0.5
           };
 
-        let observer = new IntersectionObserver(function(entries, self) {
+        let observer = new IntersectionObserver(function(entries) {
             
             entries.forEach(entry => {
                 
                 if(entry.isIntersecting) {
                     intersectionHandler(entry);
+                }
+            })
+        }, config)
+        let observer2 = new IntersectionObserver(function(entries) {
+            
+            entries.forEach(entry => {
+                
+                if(entry.isIntersecting) {
                     lazyLoading(entry);
                 }
             })
@@ -55,6 +64,9 @@ class Songs extends PureComponent {
 
         sections.forEach(section => {
             observer.observe(section);
+        });
+        lazys.forEach(lazy => {
+            observer2.observe(lazy);
         })
 
         function intersectionHandler(entry) {
@@ -73,15 +85,13 @@ class Songs extends PureComponent {
 
         let that = this;
         function lazyLoading(entry) {
+
             const { songs } = that.props;
-            const player = entry.target.childNodes[1].lastChild;
-            const id = entry.target.id.slice(2);
+            const player = entry.target
+            const id = parseInt(entry.target.id);
 
             if(player.classList[0] === 'lazy') {
                 player.src = `https://open.spotify.com/embed?uri=${songs.tracks[id].uri}`;
-                if(id === '0') {
-                    player.setAttribute('allow', "encrypted-media; autoplay;");
-                }
                 player.classList.remove('lazy');
                 observer.unobserve(player);
             }

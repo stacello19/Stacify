@@ -19,9 +19,13 @@ export const logOut = createAction(LOGOUT, () => {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('display_name');
     localStorage.removeItem('spotifyProfile');
+    localStorage.removeItem('query');
     return null;
 })
-export const getQuery = createAction(GETQUERY, query => query)
+export const getQuery = createAction(GETQUERY, query => {
+    localStorage.setItem('query', query);
+    return query;
+})
 export const getInfo = createAction(GET_INFO, (display_name, spotifyProfile) => {
     localStorage.setItem('display_name', display_name);
     localStorage.setItem('spotifyProfile', spotifyProfile);
@@ -33,7 +37,7 @@ const initialState = {
     songs: {},
     access_token: localStorage.getItem('access_token') ? localStorage.getItem('access_token') : null,
     refresh_token: localStorage.getItem('refresh_token') ? localStorage.getItem('refresh_token') : null,
-    query: '',
+    query: localStorage.getItem('query') ? localStorage.getItem('query') : '',
     display_name: localStorage.getItem('display_name') ? localStorage.getItem('display_name') : null,
     spotifyProfile: localStorage.getItem('spotifyProfile') ? localStorage.getItem('spotifyProfile') : null,
 };;
