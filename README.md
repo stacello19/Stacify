@@ -7,8 +7,8 @@
 * React
 * Redux
 * D3.js
-* Spotify API
-* Pexels API
+* Spotify API (https://developer.spotify.com/documentation/web-api/)
+* Pexels API (https://www.pexels.com/api/)
 * Node.js
 
 
