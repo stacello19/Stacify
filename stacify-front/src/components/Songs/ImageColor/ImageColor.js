@@ -10,7 +10,7 @@ const Nav = (props) => {
 
     return tracks.map((image, id) => {
         return (
-            <li key={id} onClick={scrollDiv} data-ref={`id${id}`} style={{cursor: 'pointer'}}>
+            <li className='navLi' key={id} onClick={scrollDiv} name={`id${id}`}  data-ref={`id${id}`} style={{cursor: 'pointer'}}>
                 <img src={image.album.images[0].url} name={`id${id}`} alt={image.album.name} width='50' height='50' />
             </li>
         )

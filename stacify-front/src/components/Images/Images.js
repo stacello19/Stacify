@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { createClient } from 'pexels';
+import styles from './Images.scss';
+import classNames from 'classnames/bind';
 
-const client = createClient('563492ad6f91700001000001c8f8d31aaeff4e7b8c2ce22777e89401');
+const cx = classNames.bind(styles);
+
+const client = createClient(`${process.env.PEXEL_ID}`);
 
 let anchorPoint = {
     'White': {r: 100, g: 100, b: 100},
@@ -72,28 +76,53 @@ const getColorName = (obj) => {
     return null;
 }
 
-export const RenderImages = (props) => {
+export class RenderImages extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = { photoArr: [] }
+    }
 
-    let res = calcColor(hexToRgb(props.colorBase));
-    let reformattedRes = transferring(res);
-    let query = getColorName(reformattedRes);
-    let imgs;
+    componentDidMount() {
+        const { colorBase } = this.props;
+        let res = calcColor(hexToRgb(colorBase));
+        let reformattedRes = transferring(res);
+        let query = getColorName(reformattedRes);
+        
+        client.photos.search({ query, per_page: 30 }).then(photos => {
+            const photoArr = photos.photos.map(photo => ({photographer: photo.photographer, picture: photo.src.small}))
+            this.setState({ photoArr });
+        }).catch(err => {
+            console.log(err);
+        })
+        
+    }
+    
+    renderingArts = () => {
+        const { photoArr } = this.state;
 
-    // client.photos.search({ query, per_page: 40 }).then(photos => {
-    //     imgs = photos.photos.map(photo => ({photographer: photo.photographer, picture: photo.src.small}))
-    //     console.log(imgs);
-    // });
-    // if(imgs !== []) {
-    //     return imgs.map((image, i) => {
-    //         return (
-    //             <React.Fragment>
-    //                 <li key={i}>
-    //                     <img src={image.picture} alt={image.photographer} width='50' height='50' />
-    //                 </li>
-    //             </React.Fragment>
-    //         )
-    //     })
-    // }
-    return <h2>Sorry.. API rate limit exceeded</h2>
+        let arr = new Array(10).fill(0);
+        return arr.map((el, i) => {
+                return (
+                    <React.Fragment>
+                        <li key={i}>
+                            <img src={photoArr[Math.floor(Math.random()*30)].picture} alt={photoArr[Math.floor(Math.random()*30)].photographer} className={cx('photo')}/>
+                        </li>
+                    </React.Fragment>
+                )
+            })
+    }
+
+
+    render() {
+        const { photoArr } = this.state;
+
+        return (
+            <div className={cx('pictures')}>
+                <ul className={cx('ulDiv')}>
+                    { photoArr.length > 0 ? this.renderingArts() : <h2>Sorry.. API rate limit exceeded</h2>  }
+                </ul>
+            </div>
+        )
+    }
 }
 
