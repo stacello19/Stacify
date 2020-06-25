@@ -1,5 +1,3 @@
-# Stacify
-
 ![gif later]()
 
 
