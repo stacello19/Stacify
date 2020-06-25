@@ -119,8 +119,9 @@ export class RenderImages extends PureComponent {
         return (
             <div className={cx('pictures')}>
                 <ul className={cx('ulDiv')}>
-                    { photoArr.length > 0 ? this.renderingArts() : <h2>Sorry.. API rate limit exceeded</h2>  }
+                    { photoArr.length > 0 && this.renderingArts() }
                 </ul>
+                { photoArr.length === 0 && <h2>Sorry.. API rate limit exceeded</h2>  }
             </div>
         )
     }
