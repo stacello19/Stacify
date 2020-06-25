@@ -44,10 +44,11 @@ class Home extends PureComponent {
         const div = document.querySelector('.d3Div');
 
         let that = this;
+        let check = true;
         const height = div.offsetHeight-50;
         const width = div.offsetWidth-50;
-        const names = ['hello', 'target_acousticness', 'target_danceability', 'target_energy', 'target_instrumentalness', 'target_liveness', 'target_loudness', 'target_mode', 'target_tempo']
-        const nodes = d3.range(8).map(function(i) { return {name: names[i], radius: 25, x: Math.random() * 85 + 100, y: Math.random() * 95 +200}; })
+        const names = ['bye', 'hello', 'target_acousticness', 'target_danceability', 'target_energy', 'target_instrumentalness', 'target_liveness', 'target_loudness', 'target_mode', 'target_tempo']
+        const nodes = d3.range(10).map(function(i) { return {name: names[i], radius: 25, x: Math.random() * 85 + 100, y: Math.random() * 95 +200}; })
         const color = d3.scaleOrdinal(d3.schemePastel2);
 
         const svg = d3.select(this.d3Chart.current)
@@ -58,11 +59,12 @@ class Home extends PureComponent {
         let instruction = svg.append('text')
                                 .attr('class', 'instruction')
                                 .text('Drag the circle to make it BIGGER!')
-                                .attr("transform", `translate(${width/3}, 50)`)
+                                .attr("transform", `translate(${width/2}, 50)`)
                                 .style('font-weight', 900)
                                 .style('font-size', 25)
-            
-                          
+                                .style('text-anchor', 'middle')
+
+        moveArrow()
         //Force for the circles
         d3.forceSimulation(nodes)
             .force('charge', d3.forceManyBody().strength(5))
@@ -81,7 +83,21 @@ class Home extends PureComponent {
             }))
             .on('tick', ticked2);
         
-        
+        function moveArrow() {
+            let arrow = svg.append('text')
+                        .attr('class', 'arrow')
+                        .text('⇩')
+                        .attr("transform", `translate(${width/2}, 100)`)
+                        .style('font-size', 45)
+            repeat();
+            function repeat() {
+                arrow.transition().duration(1000)
+                        .attr("transform", `translate(${width/2}, 130)`)
+                     .transition().duration(1000)
+                        .attr("transform", `translate(${width/2}, 100)`)
+                        .on('end', repeat)
+            }       
+        }
         function ticked2() {
             const texts = svg.selectAll("text")
                                 .data(nodes.slice())
@@ -100,7 +116,7 @@ class Home extends PureComponent {
         function ticked() {
           
             const circles = svg.selectAll('circle')
-                            .data(nodes.slice(1))
+                            .data(nodes.slice(2))
                     
             circles.enter().append('circle')
                     .attr('r', (d) => d.radius)
@@ -130,7 +146,6 @@ class Home extends PureComponent {
                             that.setState({ [d.name]: that.calcPerc(d.radius) })
                         }
                         instruction.text('When you are finished, pick your music genre on the right')
-                                    .attr("transform", `translate(${width/4.5}, 50)`);
                     })
 
             circles.exit().remove()
@@ -157,7 +172,10 @@ class Home extends PureComponent {
                                             that.setState({ [d.name]: that.calcPerc(d.radius) })
                                         }
 
-                                        instruction.text('Click the circle to make it SMALLER!')
+                                        if(check) {
+                                            instruction.text('Click the circle to make it SMALLER!')
+                                            check = false;
+                                        }
                                     })
             dragHandler(circles);
         }
@@ -275,7 +293,10 @@ class Home extends PureComponent {
 
     handleClick = () => {
         let div = document.querySelector('.instruction');
+        let div2 = document.querySelector('.arrow');
+
         div.classList.add('hidden');
+        div2.classList.add('hidden');
     }
     render() {
         return (
