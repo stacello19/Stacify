@@ -4,7 +4,7 @@ import styles from './Songs.scss';
 import classNames from 'classnames/bind';
 import querystring from 'querystring';
 import Players from './Player/Player';
-import Nav from './ImageColor/ImageColor';
+import { Nav }from './ImageColor';
 import { bindActionCreators } from 'redux';
 import * as actions from 'reducers';
 import axios from 'axios';
@@ -89,9 +89,10 @@ class Songs extends PureComponent {
             const { songs } = that.props;
             const player = entry.target
             const id = parseInt(entry.target.id);
+            const url = songs.tracks[id].uri;
 
             if(player.classList[0] === 'lazy') {
-                player.src = `https://open.spotify.com/embed?uri=${songs.tracks[id].uri}`;
+                player.src = `https://open.spotify.com/embed?uri=${url}`;
                 player.classList.remove('lazy');
                 observer.unobserve(player);
             }
@@ -106,7 +107,7 @@ class Songs extends PureComponent {
                 <div className={cx('songTop')}>
                     <Navbar />
                     <ul className={cx('songListNav')}>
-                       { songs.tracks && <Nav tracks={songs.tracks} gotColors={getColors}/> }
+                       { songs.tracks && <Nav tracks={songs.tracks} /> }
                     </ul>
                 </div>
                 <div className={cx('songListDiv')}>
@@ -125,7 +126,6 @@ export default connect(
         refresh_token: state.refresh_token
     }),
     (dispatch) => ({
-        getColors: bindActionCreators(actions.getColors, dispatch),
         getSongData: bindActionCreators(actions.getSongData, dispatch)
     })
 )(Songs)

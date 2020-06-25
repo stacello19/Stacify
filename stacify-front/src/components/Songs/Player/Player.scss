@@ -12,12 +12,24 @@ li.active {
     background-color: white;
 }
 
+.music-container {
+    display: flex;
+    color: white;
+}
 .musicData {
+    flex: 1;
     text-align: center;
+    padding-right: 1em;
 }
 
-.musicData h3 {
-    color: white;
+.artData {
+    flex: 2;
+    text-align: end;
+    margin-right: 1em;
+    a {
+        color: white;
+        text-decoration: none;
+    }
 }
 
 .colorDiv {

@@ -66,7 +66,7 @@ const reducers = handleActions({
     GET_COLORS: (state, action) => {
         return {
             ...state,
-            colors: [...state.colors, action.payload]
+            colors: action.payload
         }
     },
     LOGOUT: (state, action) => {

@@ -44,17 +44,25 @@ class Home extends PureComponent {
         const div = document.querySelector('.d3Div');
 
         let that = this;
-        const height = div.offsetHeight;
-        const width = div.offsetWidth;
-        const names = ['target_acousticness', 'target_danceability', 'target_energy', 'target_instrumentalness', 'target_liveness', 'target_loudness', 'target_mode', 'target_tempo']
+        const height = div.offsetHeight-50;
+        const width = div.offsetWidth-50;
+        const names = ['hello', 'target_acousticness', 'target_danceability', 'target_energy', 'target_instrumentalness', 'target_liveness', 'target_loudness', 'target_mode', 'target_tempo']
         const nodes = d3.range(8).map(function(i) { return {name: names[i], radius: 25, x: Math.random() * 85 + 100, y: Math.random() * 95 +200}; })
         const color = d3.scaleOrdinal(d3.schemePastel2);
-    
+
         const svg = d3.select(this.d3Chart.current)
                         .append('svg')
                             .attr('width', width)
                             .attr('height', height)
 
+        let instruction = svg.append('text')
+                                .attr('class', 'instruction')
+                                .text('Drag the circle to make it BIGGER!')
+                                .attr("transform", `translate(${width/3}, 50)`)
+                                .style('font-weight', 900)
+                                .style('font-size', 25)
+            
+                          
         //Force for the circles
         d3.forceSimulation(nodes)
             .force('charge', d3.forceManyBody().strength(5))
@@ -78,20 +86,21 @@ class Home extends PureComponent {
             const texts = svg.selectAll("text")
                                 .data(nodes.slice())
                                 .enter()
-
+            
             texts.append("text")
                     .merge(texts)
                     .attr('x', (d) => d.x)
                     .attr('y', (d) => d.y)
                     .attr('font-size', '15px')
                     .text((d) => d.name.split('_')[1])
+                    .style('user-select', 'none')
                     .style('text-anchor', 'middle')
         }
 
         function ticked() {
           
             const circles = svg.selectAll('circle')
-                            .data(nodes.slice())
+                            .data(nodes.slice(1))
                     
             circles.enter().append('circle')
                     .attr('r', (d) => d.radius)
@@ -120,6 +129,8 @@ class Home extends PureComponent {
                         } else {
                             that.setState({ [d.name]: that.calcPerc(d.radius) })
                         }
+                        instruction.text('When you are finished, pick your music genre on the right')
+                                    .attr("transform", `translate(${width/4.5}, 50)`);
                     })
 
             circles.exit().remove()
@@ -145,6 +156,8 @@ class Home extends PureComponent {
                                         } else {
                                             that.setState({ [d.name]: that.calcPerc(d.radius) })
                                         }
+
+                                        instruction.text('Click the circle to make it SMALLER!')
                                     })
             dragHandler(circles);
         }
@@ -202,7 +215,7 @@ class Home extends PureComponent {
             const spotifyProfile = external_urls.spotify;
 
             getInfo(display_name, spotifyProfile)
-            // this.setState({ display_name, spotifyProfile })
+        
         } catch(e) {
             const response = await axios.get(`http://localhost:9000/test/refresh_token?refresh_token=${refresh_token}`)
             const access_token = response.data.access_token;
@@ -260,14 +273,18 @@ class Home extends PureComponent {
         this.getRecommendation(access_token)
     }
 
+    handleClick = () => {
+        let div = document.querySelector('.instruction');
+        div.classList.add('hidden');
+    }
     render() {
         return (
             <div className={cx('homeDiv')}>
                 <div className={cx('d3Div')} ref={this.d3Chart}></div>
                 <form className={cx('formDiv')} onSubmit={this.handleSubmit}>
-                    <h3>Pick Your Genres:</h3>
-                    <select name='seed_genres' onChange={this.listenChange}> 
-                        <option selected disabled>Choose an option</option>
+                    <h3>Pick Your Genre:</h3>
+                    <select onClick={this.handleClick} name='seed_genres' onChange={this.listenChange}> 
+                        <option selected="selected" disabled>Choose an option</option>
                         <option value="acoustic">acoustic</option>
                         <option value="blues">blues</option>
                         <option value="classical">classical</option>
@@ -282,9 +299,6 @@ class Home extends PureComponent {
                     </select>
                     <br/>
                     <button className={cx('btn')} type='submit'>Submit</button>
-                    <h4>Instructions:</h4>
-                    <h5>Drag the circle to make it Bigger</h5>
-                    <h5>Click the circle to make it Smaller</h5>
                 </form>
             </div>
         );
