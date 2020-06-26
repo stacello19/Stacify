@@ -1,4 +1,5 @@
-![gif later]()
+![stacifyGif](https://user-images.githubusercontent.com/45322680/85886253-b3b16d80-b7b3-11ea-87c9-9495c5601f72.gif)
+
 
 
 # Stacify
