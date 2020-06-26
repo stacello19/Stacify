@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-const client = createClient(`${process.env.PEXEL_ID}`);
+const client = createClient('563492ad6f91700001000001c8f8d31aaeff4e7b8c2ce22777e89401');
 
 let anchorPoint = {
     'White': {r: 100, g: 100, b: 100},
