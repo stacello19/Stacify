@@ -1,0 +1,30 @@
+@mixin textDeco($fontSize) {
+    color: white;
+    text-decoration: none;
+    font-size: $fontSize;
+}
+
+@mixin flexing($content) {
+    display: flex;
+    justify-content: $content;
+}
+
+@mixin btn($color) {
+    margin: 1rem;
+    width: 7rem;
+    height: 2.8rem;
+    outline: none;
+    font-weight: 600;
+    cursor: pointer;
+    border: 3px solid $color;
+}
+
+@mixin liDeco {
+    padding: 1em;
+    background-color: white;
+}
+
+@mixin flexBaby($flex, $textAlign) {
+    flex: $flex;
+    text-align: $textAlign;
+}

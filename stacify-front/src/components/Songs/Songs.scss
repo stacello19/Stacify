@@ -1,18 +1,19 @@
+@import 'styles/_mixins';
+
 .songTop {
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
     z-index: 10;
-}
 
-.songListNav {
-    display: flex;
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    justify-content: space-evenly;
-    list-style: none;
+    .songListNav {
+        @include flexing(space-evenly);
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        list-style: none;
+    }
 }
 
 .songListDiv {

@@ -1,35 +1,30 @@
+@import 'styles/_mixins';
+
 nav {
-    display: flex;
+    @include flexing(space-between);
+    background-color: black;
     padding-top: 1.5em;
     height: 4.5rem;
-    background-color: black;
     color: white;
-    justify-content: space-between;
+    .rightNav {
+        padding-top: 1em;
+    }
+    .leftNav {
+        padding-left: 1em;
+        margin-top: -1.5em;
+    }
 }
 
 span {
     color: #1DB954;
 }
 
-.leftNav {
-    padding-left: 1em;
-    margin-top: -1.5em;
-}
-
 .linkSpotify {
-    color: white;
-    font-size: 1.3em;
-    text-decoration: none;
-    font-weight: 700;
-}
-
-.rightNav {
-    padding-top: 1em;
+    @include textDeco(1.5em);
+    font-weight: 600;
 }
 
 .links {
     margin: 0.8em;
-    color: white;
-    text-decoration: none;
-    font-size: 1.5em;
+    @include textDeco(1.5em);
 }

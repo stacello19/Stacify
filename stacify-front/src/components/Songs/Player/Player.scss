@@ -1,42 +1,39 @@
+@import 'styles/_mixins';
+
 .list {
     min-height: 100vh;
 }
 
 .colorlist {
-    display: flex;
-    justify-content: center;
+    @include flexing(center);
 }
 
 .navLi {
     transition: 0.5s ease-in-out;
     &:hover {
-        padding: 1em;
-        background-color: white;
+        @include liDeco;
     }
 }
 
 .navLi.active {
-    padding: 1em;
-    background-color: white;
+    @include liDeco;
 }
 
 .music-container {
     display: flex;
     color: white;
-}
-.musicData {
-    flex: 1;
-    text-align: center;
-    padding-right: 1em;
-}
 
-.artData {
-    flex: 2;
-    text-align: end;
-    margin-right: 1em;
-    a {
-        color: white;
-        text-decoration: none;
+    .musicData {
+        @include flexBaby(1, center);
+        padding-right: 1em;
+    }
+
+    .artData {
+        @include flexBaby(2, end);
+        margin-right: 1em;
+        a {
+            @include textDeco(1em);
+        }
     }
 }
 

@@ -1,3 +1,5 @@
+@import 'styles/_mixins';
+
 .homeDiv {
     display: flex;
     height: 100vh;
@@ -10,29 +12,23 @@
 }
 
 .formDiv {
-    flex: 0.3;
-    text-align: center;
+    @include flexBaby(0.3, center);
     padding-top: 5em;
+
+    select {
+        font-size: 18px;
+        color: #60666d;
+        padding: 0.5em;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .btn {
+        @include btn(black);
+        font-size: 0.8rem;
+    }
 }
 
-select {
-    font-size: 18px;
-    color: #60666d;
-    padding: 0.5em;
-    cursor: pointer;
-    outline: none;
-}
-
-.btn {
-    margin: 1rem;
-    width: 7rem;
-    height: 2.8rem;
-    outline: none;
-    border: 3px solid black;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-}
 
 .hidden {
     display: none;
