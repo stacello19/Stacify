@@ -50,10 +50,10 @@ const calcColor = (arr) => {
 }
   
 const transferring = (obj) => {
-
+  
 for(let rgb in obj) {
     if(obj[rgb] < 50) {
-    obj[rgb] = 0;
+        obj[rgb] = 0;
     } else {
     if(obj[rgb] >=50 && obj[rgb] <= 75) {
         obj[rgb] = 50;
@@ -83,8 +83,9 @@ export class RenderImages extends PureComponent {
     }
 
     componentDidMount() {
-        const { colorBase } = this.props;
-        let res = calcColor(hexToRgb(colorBase));
+        const { name, colors } = this.props;
+
+        let res = calcColor(hexToRgb(colors[name]));
         let reformattedRes = transferring(res);
         let query = getColorName(reformattedRes);
         

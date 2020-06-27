@@ -15,7 +15,7 @@ const Players = (props) => {
         return (
             <div className={cx(`list`)} id={cx(`id${i}`)} key={i}>
                 <div className={cx(`colorlist`)}>
-                   <RenderColors pic={song.album.images[0].url} name={song.album.name}/> 
+                   <RenderColors pic={song.album.images[0].url} name={song.name}/> 
                 </div>
                 <div className={cx('music-container')}>
                   <div className={cx('musicData')}>
@@ -24,7 +24,7 @@ const Players = (props) => {
                   </div>
                   <div className={cx('artData')}>
                     <h4><a href="https://www.pexels.com">Photos provided by Pexels</a></h4>
-                    { colors[i] && <RenderImages colorBase={colors[i]} /> }
+                    { Object.keys(colors).length > 0 && <RenderImages name={song.name} colors={colors} /> }
                   </div>
                 </div>
             </div>

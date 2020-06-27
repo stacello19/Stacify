@@ -1,11 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from 'reducers';
 
-let colorArr = [];
-class RenderColors extends PureComponent {
+let colorObj = {};
+
+class RenderColors extends Component {
     constructor(props) {
       super(props);
       this.state = { colors: [] }
@@ -13,7 +14,7 @@ class RenderColors extends PureComponent {
   
     renderSwatches = () => {
       const { colors } = this.state
-  
+
       return colors.map((color, id) => {
         return (
           <div
@@ -29,18 +30,22 @@ class RenderColors extends PureComponent {
     }
   
     getColors = colors => {
-        const { gotColors } = this.props;
+        const { gotColors, name } = this.props;
+ 
+        this.setState({ colors });
 
-        this.setState(state => ({ colors: [...state.colors, ...colors] }));
-        colorArr.push(colors)
-
-        if(colorArr.length === 20) {
-            gotColors(colorArr);
+        colorObj = {
+          ...colorObj,
+          [name]: colors
+        }
+        if(Object.keys(colorObj).length === 20) {
+            gotColors(colorObj);
         }
     }
   
     render() {
       const { pic, name } = this.props;
+
       return (
         <div>
           <ColorExtractor getColors={this.getColors}>
@@ -57,7 +62,7 @@ class RenderColors extends PureComponent {
               justifyContent: 'center'
             }}
           >
-            {this.renderSwatches()}
+            { this.renderSwatches() }
           </div>
         </div>
       )

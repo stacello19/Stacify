@@ -101,7 +101,7 @@ class Songs extends PureComponent {
 
     render() {
 
-        const { getColors, colors, songs } = this.props;
+        const { colors, songs } = this.props;
         return (
             <React.Fragment>
                 <div className={cx('songTop')}>

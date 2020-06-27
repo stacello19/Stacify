@@ -33,7 +33,7 @@ export const getInfo = createAction(GET_INFO, (display_name, spotifyProfile) => 
 });
 
 const initialState = {
-    colors: [],
+    colors: {},
     songs: {},
     access_token: localStorage.getItem('access_token') ? localStorage.getItem('access_token') : null,
     refresh_token: localStorage.getItem('refresh_token') ? localStorage.getItem('refresh_token') : null,
