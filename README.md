@@ -16,3 +16,8 @@
 ## Overview
 Stacify is a music personalization platform where users can select, listen, and enjoy artworks by their taste
 
+## To Use
+* Your own Spotify Id, client secret, and redirect url. 
+* Your API from Pexels
+* Yarn install
+
