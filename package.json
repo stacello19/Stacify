@@ -6,7 +6,7 @@
   "scripts": {
     "client": "cd stacify-front && yarn start",
     "server": "cd stacify-back && yarn start",
-    "start": "npm install && concurrently \"npm run server\" \"npm run client\"",
+    "start": "npm install --save-dev concurrently && concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
