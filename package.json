@@ -6,8 +6,7 @@
   "scripts": {
     "client": "cd stacify-front && yarn start",
     "server": "cd stacify-back && yarn start",
-    "start": "npm install && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
