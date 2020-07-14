@@ -4,8 +4,8 @@
   "description": "![stacifyGif](https://user-images.githubusercontent.com/45322680/85886253-b3b16d80-b7b3-11ea-87c9-9495c5601f72.gif)",
   "main": "index.js",
   "scripts": {
-    "client": "cd stacify-front && yarn && yarn start",
-    "server": "cd stacify-back && yarn && yarn start",
+    "client": "cd stacify-front && yarn start",
+    "server": "cd stacify-back && yarn start",
     "start": "npm run client && npm run server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
