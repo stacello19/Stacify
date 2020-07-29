@@ -6,7 +6,7 @@
 
 ## Code Example:
 
-<script src="https://gist.github.com/stacello19/7dee6b9c9563dcfa7e849c3d21b5d827.js"></script>
+![image](https://user-images.githubusercontent.com/45322680/88842542-9c4c1280-d1ad-11ea-83b1-bbcb4f5a8a01.png)
 
 ## Skills
 * React
