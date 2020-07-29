@@ -2,7 +2,7 @@
 
 
 
-# Stacify: [Stacify_Website](https://stacify.herokuapp.com)
+# Stacify: [https://stacify.herokuapp.com](https://stacify.herokuapp.com)
 
 ## Skills
 * React
