@@ -4,7 +4,10 @@
 
 # Stacify: [https://stacify.herokuapp.com](https://stacify.herokuapp.com)
 
-## Code Example: [Intersection Observe API](https://gist.github.com/stacello19/7dee6b9c9563dcfa7e849c3d21b5d827)
+## Code Example:
+
+<script src="https://gist.github.com/stacello19/7dee6b9c9563dcfa7e849c3d21b5d827.js"></script>
+
 ## Skills
 * React
 * Redux
