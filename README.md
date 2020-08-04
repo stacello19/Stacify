@@ -3,6 +3,7 @@
 
 
 # Stacify: [https://stacify.herokuapp.com](https://stacify.herokuapp.com)
+Stacify is a music personalization platform where users can select, listen, and enjoy artworks by their taste
 
 ## Code Example (Intersection Observe API): [Code Sample gist](https://gist.github.com/stacello19/7dee6b9c9563dcfa7e849c3d21b5d827)
 
@@ -17,8 +18,6 @@
 * Node.js
 
 
-## Overview
-Stacify is a music personalization platform where users can select, listen, and enjoy artworks by their taste
 
 
 
